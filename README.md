@@ -1,6 +1,8 @@
 ng-hello-world
 ==============
 
+## Homework: 
+
 Create a home automation application that utilizes the following:
 
 - An Angular module

@@ -1,0 +1,87 @@
+<html ng-app="CarApp">
+
+<head>
+	<script src="bower_components/angular/angular.js"></script>
+	<script src="util.js"></script>
+
+	<script>
+		var app = angular.module("CarApp", []);
+
+		app.controller("CarCtrl", function($scope) {
+			$scope.type = "Subaru STi";
+			$scope.name = "erics car";
+			$scope.wheels = 4;
+			$scope.started = false;
+
+			$scope.startStop = function() {
+				$scope.started = !$scope.started;
+			};
+
+			$scope.tires = [{
+				location: "fl",
+				pressure: 33
+			}, {
+				location: "fr",
+				pressure: 24
+			}, {
+				location: "rl",
+				pressure: 19
+			}, {
+				location: "rr",
+				pressure: 32
+			}];
+		});
+
+		app.filter("titlecase", function() {
+			return function(input) {
+				return input.toTitleCase();
+			}
+		})
+
+		 app.filter("deflated", function() {
+			return function(items) {
+				var filtered = [];
+
+				angular.forEach(items, function(item) {
+					if (item.pressure < 25) {
+						filtered.push(item);
+					}
+				});
+
+				return filtered;
+			}
+		});
+	</script>
+	
+	<style>
+		.alert {
+			color: red;
+		}
+		
+		.warning {
+			color: orange;
+		}
+	</style>
+</head>
+
+<body>
+
+	<div ng-controller="CarCtrl">
+		<h1>{{type}}</h1>
+		<div>Wheels: {{wheels}}</div>
+		<div>
+			Name: {{name | titlecase }}
+			<input type="text" ng-model="name">
+		</div>
+
+		<div ng-click="startStop()">Started: {{started}}</div>
+
+		<div ng-repeat="tire in tires | deflated" 
+			 ng-class="{ 'warning': tire.pressure < 25 && tire.pressure >= 20, 'alert': tire.pressure < 20 }">
+			{{tire.location | uppercase}}: {{tire.pressure}}
+		</div>
+	</div>
+
+</body>
+
+</html>
